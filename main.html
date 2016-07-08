@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="main.css">
+        <title>Malicious Site Main</title>
+    </head>
+    <body>
+
+		<!-- Container -->
+		<div id="container">
+
+			<!-- Header -->
+			<div id="header">
+				<h1 class="letterpress">Malicious Site</h1>
+			</div>
+
+			<!-- Contents -->
+			<div id="content">
+				<div class="section">
+					<h3>Send Malicious Mail</h3>
+					<form action="sendMaliciousMail.php" method="post">
+						<table border="1">
+							<tr>
+								<td>Input Target Address</td>
+								<td >
+									<input style="width:400px;" type="text" 
+										name="txt-sendto" value="syunsuke.kaneko.ns@d.mbsd.jp"></input>
+								</td>
+								<td colspan="2" align="center">
+									<input type="submit" name="btn-sendmail" value="Send Mail"></input>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+
+				<!-- 現在日時を表示する
+				<form action="./util/date.php" method="get">
+				    <input type="submit" name="現在日時" value="現在日時"></input>
+				</form>	
+				-->
+
+				<!-- ファイルをアップロードする
+				<form action="./util/uploader.php" method="post" enctype="multipart/form-data">
+		　　　　　　　　　　　　<input type="file" name="upfile">
+				    <input type="submit" name="アップロードする" value="アップロードする"></input>
+				</form>	
+				-->
+
+				<!-- DB接続テスト
+				<form action="./util/connect.php" method="get">
+				    <input type="submit" name="DB接続" value="DB接続"></input>
+				</form>	
+				-->
+			</div>
+
+			<!-- Footer 
+			<div id="footer"></div>
+			-->
+
+		</div>
+
+    </body>
+</html>

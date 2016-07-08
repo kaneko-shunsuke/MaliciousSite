@@ -1,0 +1,158 @@
+
+■問題
+・以下の操作を行ったときの処理フローを記載
+・脆弱性や不具合がある場合も記載すること。
+
+
+(1)本システム利用者がユーザ登録、ユーザ検索を行う
+ ユーザ登録関数：USERINFO_REGISTRY 
+ ユーザ検索関数：USERINFO_SEARCH
+
+(2)その後、ユーザ情報の更新を行う
+ ユーザ更新関数：USERINFO_UPDATE
+
+
+■プログラム
+
+FUNCTION USERINFO_REGISTRY(name,nickname,mail_address,profile) 
+
+	IF ( length(name) > 20 || length(nickname) > 10 || length(mail_address) > 30 || length(profile) > 100 )  THEN 
+		RETURN FALSE
+	END IF
+	
+	IF (DB CONNECTION == FAILED ) THEN
+		RETURN FALSE
+	END IF
+
+	// userinfoはname,nickname,mail_address,profileを含む
+	IF (INSERT userinfo TO USERINFO_TABLE == FAILED) THEN 
+		RETURN FALSE
+	END IF
+	
+	DB CLOSE
+	
+	RETURN TRUE
+
+END FUNCTION
+
+
+☆処理フロー
+	1, 引数のいずれかの値が下記条件を満たしていない場合、falseを返す
+		name			20文字以内
+		nickname		10文字以内
+		mail_address	30文字以内
+		profile			100文字以内
+	2, DBコネクションがない場合、falseを返す
+	3, userinfoをUSERINFO_TABLEに格納できない場合、falseを返す
+	4, DBコネクションをクローズする。
+	5, trueを返す
+
+☆懸念点
+	・言語仕様によるかもしれないが、引数がnullの場合にlength()メソッドでエラーになりそう。
+	  引数のnullチェックをしたほうがいい。
+	・フロー3でデータ登録する前に、userinfoの必須入力項目/一意項目があるならチェックしたほうがいい。
+	  "USERINFO_SEARCH"を見る限り、name,mail_address,nicknameは必須入力チェックしたほうがよさそう。
+	・フロー3の"INSERT userinfo TO USERINFO_TABLE"でExceptionが発生したら
+	  システムエラー（&スタックトレース出力）で終了しそうなので、例外処理をしたほうがいい。
+	・フロー4でクローズに失敗したらシステムエラー（&スタックトレース出力）で終了しそうなので、例外処理をしたほうがいい。
+-------------------------------------------------------------------------------
+
+
+FUNCTION USERINFO_SEARCH(name,mail_address) 
+
+	IF ( length(name) > 20 || length(mail_address) > 30)  THEN 
+		RETURN FALSE
+	END IF
+	
+	
+	IF (DB CONNECTION == FAILED ) THEN
+		RETURN FALSE
+	END IF
+
+	IF ( name AND mail_address NOT INCLUDE IN USERINFO_TABLE) THEN
+		RETURN FALSE
+	ELSE
+		IF ( GET nickname FROM USERINFO_TABLE < 10 ) THEN
+			OUT PUT nickname ON SCREEN
+		ELSE
+			OUT PUT ERROR MESSAGE ON SCREEN
+		END
+	END
+	
+	DB CLOSE
+	
+	RETURN TRUE
+
+END FUNCTION
+
+
+☆処理フロー
+	1, 引数のいずれかの値が下記条件を満たしていない場合、falseを返す
+		name			20文字以内
+		mail_address	30文字以内
+	2, DBコネクションがない場合、falseを返す
+	3, USERINFO_TABLEに「name=:name」かつ「mail_address=:mail_address」に該当するデータが存在しない場合、
+		falseを返す
+	4, 3に該当するuserinfoの「nickname」が10文字未満の場合は画面に「nickname」の値を出力する。
+		10文字以上の場合はエラーメッセージが画面に表示される。
+	5, DBコネクションをクローズする。
+	6, trueを返す
+
+☆不具合や脆弱性
+・nicknameは10文字まで許容されているにもかかわらず、
+  10文字で登録されている場合にフロー4でエラーが表示されてしまう。
+・フロー4でnicknameを画面表示する際に無害化処理が必要。
+
+☆懸念点
+（USERINFO_REGISTRYと同様の懸念は割愛）
+・特になし
+
+-------------------------------------------------------------------------------
+
+
+FUNCTION USERINFO_UPDATE(name,mail_address,profile) 
+
+	IF ( length(name) > 20 || length(mail_address) > 30)  THEN 
+		RETURN FALSE
+	END IF
+	
+	COPY profile TO tmp_profile
+	
+	IF (DB CONNECTION == FAILED ) THEN
+		RETURN FALSE
+	END IF
+
+	IF ( name AND mail_address NOT INCLUDE IN USERINFO_TABLE) THEN
+		RETURN FALSE
+	ELSE
+		UPDATE tmp_profile TO USERINFO_TABLE
+	END
+	
+	DB CLOSE
+	
+	RETURN TRUE
+
+END FUNCTION
+
+
+☆処理フロー
+	1, 引数のいずれかの値が下記条件を満たしていない場合、falseを返す
+		name			20文字以内
+		mail_address	30文字以内
+	2, DBコネクションがない場合、falseを返す
+	3, USERINFO_TABLEに「name=:name」かつ「mail_address=:mail_address」に該当するデータが存在しない場合、
+		falseを返す
+	4, 3に該当するuserinfoの「profile」を、引数「profile」の値で更新する
+	5, DBコネクションをクローズする。
+	6, trueを返す
+
+☆不具合や脆弱性
+・profileの文字数制限チェック（100文字以内）がされていない。
+
+☆懸念点
+（USERINFO_REGISTRYと同様の懸念は割愛）
+・言語仕様によるかもしれないが、
+  フロー4でUPDATE処理を行ったときにエラーになりそう。
+  （userinfoを更新する際、userinfoオブジェクトのプロパティとしてprofileをセットしたうえでUPDATEしたほうが、
+    更新ロジックとしては自然に見える）
+・4で更新処理に失敗したらシステムエラー（&スタックトレース出力）で終了しそうなので、例外処理をしたほうがいい。

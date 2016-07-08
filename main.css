@@ -1,0 +1,73 @@
+@charset "Shift_JIS";
+
+/* --- 全体の背景・テキスト --- */
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #f0f0f0; /* ページの背景色 */
+	color: #000000; /* 全体の文字色 */
+	font-size: 100%; /* 全体の文字サイズ */
+}
+
+/* --- 全体のリンクテキスト --- */
+a:link { color: #0000ff; }
+a:visited { color: #800080; }
+a:hover { color: #ff0000; }
+a:active { color: #ff0000; }
+
+/* --- コンテナ --- */
+#container {
+	width: 780px; /* ページの幅 */
+	margin: 0 auto; /* センタリング */
+}
+
+/* --- ヘッダ --- */
+#header {
+	/* background-color: #ffe080;ヘッダの背景色 */
+	background-color: #1c275f;
+	padding: 10px;
+}
+
+.letterpress {
+  background: #1c275f;
+  color: rgba(0,0,0,0.0);
+  text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
+}
+
+/* --- コンテンツ --- */
+#content {
+background-color: #ffffff; /* コンテンツの背景色 */
+}
+
+/* --- フッタ --- */
+#footer {
+background-color: #cccccc; /* フッタの背景色 */
+	padding: 10px;
+}
+
+
+
+
+
+div.section {
+
+background-color: #ffffff; /* ボックスの背景色 */
+border: 1px #c0c0c0 solid; /* ボックスの境界線 */
+font-size: 80%; /* ボックスの文字サイズ */
+
+padding: 10px; 
+}
+
+/* --- 見出し --- */
+div.section h3 {
+margin: 0; /* 見出しのマージン */
+padding: 6px 10px; /* 見出しのパディング（上下、左右） */
+background: #f9f9f9 url(head1.gif) repeat-x top; /* 見出しの背景 */
+border-bottom: 1px #c0c0c0 solid; /* 見出しの下境界線 */
+font-size: 100%; /* 見出しの文字サイズ */
+}
+
+/* --- ボックス内の段落 --- */
+div.section p {
+margin: 1em 10px; /* 段落のマージン（上下、左右） */
+}
