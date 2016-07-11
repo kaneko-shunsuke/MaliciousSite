@@ -1,4 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<?php
+	$old_password = @$_POST['old_password'];
+	$new_password = @$_POST['new_password'];
+
+
+
+?>
 <html lang="ja">
 	<head>
 
@@ -23,6 +30,13 @@
 					<h3>パスワードが漏洩しました。</h3>
 				</div>
 			</div>
+
+			<?php 
+			echo "old_password=" . $old_password;
+			echo "<br>";
+			echo "new_password=" . $new_password;
+
+			?>
 
 			<!-- Footer 
 			<div id="footer"></div>
