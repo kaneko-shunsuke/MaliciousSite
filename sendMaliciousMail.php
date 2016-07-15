@@ -1,26 +1,57 @@
-<?php
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Send Malicious Mail</title>
+		<!-- BootstrapのCSS読み込み -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<!-- jQuery読み込み -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- BootstrapのJS読み込み -->
+		<script src="js/bootstrap.min.js"></script>
+	</head>
 
-	$sendto = $_POST['txt-sendto'];
-    print("The Malicious Mail will be Sent to MailAddress：$sendto<br />");
+	<body>
+		<nav class="navbar navbar-inverse">
+		  <div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="./index.html">Malicious Site</a>
+			</div>
 
-	//言語設定、内部エンコーディングを指定する
-	mb_language("japanese");
-	mb_internal_encoding("UTF-8");
+		  </div>
+		</nav>
 
-	//日本語メール送信
-	$to = "syunsuke.kaneko.ns@d.mbsd.jp";
-	//$subject = "【最終確認願い】 全社員12月給与・賞与額のご連絡";
-	//$body = "神吉社長 Cc:部長職各位\nお疲れ様です。鳥島です。\n\n全社員分の2016年12月給与・賞与額が仮確定したしましたので、下記リンクから最終確認をお願いいたします。\n（ID/PASS ： mbsd-admin/tfR468hxZp ）\n\nhttp://192.168.121.128/MaliciousSite/resetPassword.php";
-	//$from = "y.torishima@mbsd.jp";
- 
-	$subject = "【ITより】定期的なパスワード変更のお願い";
-	$body = "各位\n\nお疲れ様です。\n\n今月はパスワード変更月間です。\n定期的なパスワード変更にご協力をお願いいたします。\n\nなお、今回からグループウェア上からパスワードの変更を行うことができるようになりました。\n下記URLからパスワード変更ページを表示してください。\n\nｈttp://192.168.121.128/MaliciousSite/resetPassword.php";
-	$from = "it-support@d.mbsd.jp";
-	mb_send_mail($sendto,$subject,$body,"From:".$from);
+		<?php
 
-	print("Complete.");
+			//言語設定、内部エンコーディングを指定する
+			mb_language("japanese");
+			mb_internal_encoding("UTF-8");
 
-?>
+			//$sendto = $_POST['txt-sendto'];
+			$targetEmail = $_POST['target-email'];
+			$subject     = $_POST['subject'];
+			$message     = $_POST['message'];
+			$spoofEmail  = $_POST['spoof-email'];
 
+			print("The Malicious Mail will be Sent to MailAddress：$targetEmail<br />");
 
+			mb_send_mail($targetEmail,$subject,$message,"From:".$spoofEmail);
 
+			print("Complete.");
+
+		?>
+		<br>
+
+		<a href="./index.html">Return to HOME</a>
+
+	</body>
+</html>
