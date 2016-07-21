@@ -1,6 +1,5 @@
 <?php
-
-
+	include("../SecurityStudy/php/conf/context-url.php");
 ?>
 
 <html>
@@ -44,7 +43,7 @@
 		</div>
 
 		<iframe width="100%" height="100%" style="opacity: 0.1; position:absolute; top:0px; left:0px;"
-			src="http://192.168.30.145/SecurityStudy/php/main.php?contentId=shopping_car">
+			src="<?php echo $contextRoot; ?>php/main.php?contentId=shopping_car">
 		  <p>Your browser does not support iframes.</p>
 		</iframe>
 	</body>
